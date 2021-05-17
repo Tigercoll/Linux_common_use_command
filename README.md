@@ -105,3 +105,38 @@ q  e
 ```
 
 这些知识基本使用,如需更高级用法请自行google
+
+## 查看系统在线用户
+
+```bash
+w
+ 11:32:00 up 11 min,  3 users,  load average: 1.45, 1.00, 0.59
+USER     TTY      来自           LOGIN@   IDLE   JCPU   PCPU WHAT
+tiger    :0       :0               11:22   ?xdm?   5:25   0.01s /usr/lib/gdm3/g
+tiger    tty5     -                11:31    7.00s  0.21s  0.19s -zsh
+tiger    tty6     -                11:31   16.00s  0.18s  0.15s -zsh
+
+# 或者
+who   
+tiger    :0           2021-05-17 11:22 (:0)
+tiger    tty5         2021-05-17 11:31
+tiger    tty6         2021-05-17 11:31
+```
+
+## 只查看当前终端的可以使用如下两个命令
+
+```bash
+# tty 和 who am i
+tty 
+/dev/pts/0
+
+who am i
+tiger    pts/1        2021-05-17 11:41 (127.0.0.1)
+```
+
+## pkill掉自己不适用的终端
+
+```bash
+pkill -9 -t pts/1
+```
+
