@@ -12,15 +12,21 @@ tag: ['Linux']
 echo $SHELL
 ```
 
+
+
 ## 查看本机已安装的shell
 
 ```bash
 cat /etc/shells
 ```
 
+
+
 ## pstree
 
 将所有行程以树状图显示，树状图将会以 pid (如果有指定) 或是以 init 这个基本行程为根 (root)，如果有指定使用者 id，则树状图会只显示该使用者所拥有的行程。
+
+
 
 ## netstat
 
@@ -38,6 +44,8 @@ netstat -tunlp | grep 端口号
 # -p 显示建立相关链接的程序名
 ```
 
+
+
 ## tail
 
 tail 命令可用于查看文件的内容，有一个常用的参数 **-f** 常用于查阅正在改变的日志文件。
@@ -52,6 +60,8 @@ tail -f filename
 # 使用tail -F替代tail -f
 # 还可以接 grep 过滤
 ```
+
+
 
 ## AWK
 
@@ -106,6 +116,8 @@ q  e
 
 这些知识基本使用,如需更高级用法请自行google
 
+
+
 ## 查看系统在线用户
 
 ```bash
@@ -123,6 +135,8 @@ tiger    tty5         2021-05-17 11:31
 tiger    tty6         2021-05-17 11:31
 ```
 
+
+
 ## 只查看当前终端的可以使用如下两个命令
 
 ```bash
@@ -134,11 +148,15 @@ who am i
 tiger    pts/1        2021-05-17 11:41 (127.0.0.1)
 ```
 
+
+
 ## pkill掉自己不适用的终端
 
 ```bash
 pkill -9 -t pts/1
 ```
+
+
 
 ## 文件描述符
 
@@ -154,5 +172,125 @@ ulimit -n 65536
 # 内核限制: net.core.somaxconn
 # 内存限制
 # 修改⽂文件描述符: ulimit -n 65535
+```
+
+
+
+## 查询可用内存
+
+```bash
+# -m 以兆为单位，-g 以GB 为单位
+free -g
+              总计         已用        空闲      共享    缓冲/缓存    可用
+内存：          15           9           0      0       4           4
+
+```
+
+
+
+## Linux查看物理CPU个数、核数、逻辑CPU个数
+
+```bash
+# 总核数 = 物理CPU个数 X 每颗物理CPU的核数 
+# 总逻辑CPU数 = 物理CPU个数 X 每颗物理CPU的核数 X 超线程数
+
+# 查看物理CPU个数
+cat /proc/cpuinfo| grep "physical id"| sort| uniq| wc -l
+
+# 查看每个物理CPU中core的个数(即核数)
+cat /proc/cpuinfo| grep "cpu cores"| uniq
+
+# 查看逻辑CPU的个数
+cat /proc/cpuinfo| grep "processor"| wc -l
+```
+
+
+
+## rsync 是一个常用的 Linux 应用程序，用于文件同步。
+
+```bash
+rsync 参数 源文件 目标文件
+# 一般参数为avzhP
+```
+
+参数
+
+```bash
+-v, --verbose 详细模式输出
+-q, --quiet 精简输出模式
+-c, --checksum 打开校验开关，强制对文件传输进行校验
+-a, --archive 归档模式，表示以递归方式传输文件，并保持所有文件属性，等于 -rlptgoD
+-r, --recursive 对子目录以递归模式处理
+-R, --relative 使用相对路径信息
+-b, --backup 创建备份，也就是对于目的已经存在有同样的文件名时，将老的文件重新命名为~filename。可以使用 --suffix 选项来指定不同的备份文件前缀。
+--backup-dir 将备份文件（如~filename) 存放在在目录下。
+-suffix=SUFFIX 定义备份文件前缀
+-u, --update 仅仅进行更新，也就是跳过所有已经存在于 DST，并且文件时间晚于要备份的文件。（不覆盖更新的文件）
+-l, --links 保留软链结
+-L, --copy-links 想对待常规文件一样处理软链结
+--copy-unsafe-links 仅仅拷贝指向 SRC 路径目录树以外的链结
+--safe-links 忽略指向 SRC 路径目录树以外的链结
+-H, --hard-links 保留硬链结
+-p, --perms 保持文件权限
+-o, --owner 保持文件属主信息
+-g, --group 保持文件属组信息
+-D, --devices 保持设备文件信息
+-t, --times 保持文件时间信息
+-S, --sparse 对稀疏文件进行特殊处理以节省 DST 的空间
+-n, --dry-run 现实哪些文件将被传输
+-W, --whole-file 拷贝文件，不进行增量检测
+-x, --one-file-system 不要跨越文件系统边界
+-B, --block-size=SIZE 检验算法使用的块尺寸，默认是 700 字节
+-e, --rsh=COMMAND 指定使用 rsh、ssh 方式进行数据同步
+--rsync-path=PATH 指定远程服务器上的 rsync 命令所在路径信息
+-C, --cvs-exclude 使用和 CVS 一样的方法自动忽略文件，用来排除那些不希望传输的文件
+--existing 仅仅更新那些已经存在于 DST 的文件，而不备份那些新创建的文件
+--delete 删除那些 DST 中 SRC 没有的文件
+--delete-excluded 同样删除接收端那些被该选项指定排除的文件
+--delete-after 传输结束以后再删除
+--ignore-errors 及时出现 IO 错误也进行删除
+--max-delete=NUM 最多删除 NUM 个文件
+--partial 保留那些因故没有完全传输的文件，以是加快随后的再次传输
+--force 强制删除目录，即使不为空
+--numeric-ids 不将数字的用户和组 ID 匹配为用户名和组名
+--timeout=TIME IP 超时时间，单位为秒
+-I, --ignore-times 不跳过那些有同样的时间和长度的文件
+--size-only 当决定是否要备份文件时，仅仅察看文件大小而不考虑文件时间
+--modify-window=NUM 决定文件是否时间相同时使用的时间戳窗口，默认为 0
+-T --temp-dir=DIR 在 DIR 中创建临时文件
+--compare-dest=DIR 同样比较 DIR 中的文件来决定是否需要备份
+-P 等同于 --partial
+--progress 显示备份过程
+-z, --compress 对备份的文件在传输时进行压缩处理
+--exclude=PATTERN 指定排除不需要传输的文件模式
+--include=PATTERN 指定不排除而需要传输的文件模式
+--exclude-from=FILE 排除 FILE 中指定模式的文件
+--include-from=FILE 不排除 FILE 指定模式匹配的文件
+--version 打印版本信息
+```
+
+## 解压gz结尾压缩包
+
+```bash
+tar -xzvf test.tar.gz 
+# 参数
+-x或--extract或--get 从备份文件中还原文件。
+-z或--gzip或--ungzip 通过gzip指令处理备份文件。
+-v或--verbose 显示指令执行过程。
+-f<备份文件>或--file=<备份文件> 指定备份文件。
+```
+
+## watch
+
+```bash
+# 每隔多少秒查看该命令结果
+watch -n 1 命令
+```
+
+## 不间断重启
+
+```bash
+# 生产环境中为了不影响业务
+kill -HUB pid
 ```
 
