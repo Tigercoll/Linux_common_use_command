@@ -343,7 +343,9 @@ find [查找范围] [查找条件表达式]
 -type：按文件类型查找；类型指的是普通文件（f）、目录（d）、块设备文件（b）、字符设备文件（c）等。
 ```
 
-## Vim替换
+## VIM操作
+
+### Vim替换
 
 ```bash
 # :{作用范围}s/{目标}/{替换}/{替换标志}
@@ -358,7 +360,7 @@ find [查找范围] [查找条件表达式]
 :.,+2s/foo/bar/g
 ```
 
-## 命令模式：
+#### 命令模式：
 
 ```shell
 G - 光标移动到文章末尾
@@ -386,7 +388,7 @@ u - 撤销
 Ctrl + r - 恢复撤销
 ```
 
-## 多文件操作
+#### 多文件操作
 
 ```bash
 :ls - 查看所有打开的文件
@@ -397,3 +399,57 @@ Ctrl + w *2 - 切换窗口
 ：qa -  关闭全部窗口
 ：wqa - 保存并退出全部窗口
 ```
+
+## Nginx 启动报 [emerg] bind() to 0.0.0.0:XXXX failed (13: Permission denied)错误处理
+
+第一种：端口小于1024的情况：
+
+```bash
+[emerg] bind() to 0.0.0.0:80 failed (13: Permission denied)
+```
+
+原因是1024以下端口启动时需要root权限，所以sudo nginx即可。
+
+第二种：端口大于1024的情况：
+
+```bash
+[emerg] bind() to 0.0.0.0:8380 failed (13: Permission denied)
+```
+
+这种情况，需要如下操作：
+
+首先，查看http允许访问的端口：
+
+```bash
+# 执行semanage port -l | grep http_port_t
+http_port_t                    tcp      1433, 2433, 80, 81, 443, 488, 8008, 8009, 8443, 9000
+```
+
+其次，将要启动的端口加入到如上端口列表中
+
+```bash
+semanage port -a -t http_port_t  -p tcp 要添加的端口号
+```
+
+## semanage命令
+
+**semanage命令**是用来查询与修改SELinux默认目录的安全上下文。SELinux的策略与规则管理相关命令：[seinfo](http://man.linuxde.net/seinfo)命令、[sesearch](http://man.linuxde.net/sesearch)命令、[getsebool](http://man.linuxde.net/getsebool)命令、[setsebool](http://man.linuxde.net/setsebool)命令、semanage命令。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
