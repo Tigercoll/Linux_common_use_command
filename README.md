@@ -435,9 +435,28 @@ semanage port -a -t http_port_t  -p tcp 要添加的端口号
 
 **semanage命令**是用来查询与修改SELinux默认目录的安全上下文。SELinux的策略与规则管理相关命令：[seinfo](http://man.linuxde.net/seinfo)命令、[sesearch](http://man.linuxde.net/sesearch)命令、[getsebool](http://man.linuxde.net/getsebool)命令、[setsebool](http://man.linuxde.net/setsebool)命令、semanage命令。
 
+```
+semanage {login|user|port|interface|fcontext|translation} -l
+semanage fcontext -{a|d|m} [-frst] file_spec
 
 
+-l：查询。
+fcontext：主要用在安全上下文方面。
+-a：增加，你可以增加一些目录的默认安全上下文类型设置。
+-m：修改。
+-d：删除。
+```
 
+### nmap 网络探测
+
+```bash
+nmap -p 1-65535 -T4 -A -v 你的域名或者地址
+
+# -p 指定端口
+# -v 显示扫描过程
+# -T4 针对TCP端口进制动态扫描延迟超过10ms
+# -A 全面扫描
+```
 
 
 
