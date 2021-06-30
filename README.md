@@ -447,7 +447,7 @@ fcontext：主要用在安全上下文方面。
 -d：删除。
 ```
 
-### nmap 网络探测
+## nmap 网络探测
 
 ```bash
 nmap -p 1-65535 -T4 -A -v 你的域名或者地址
@@ -458,9 +458,35 @@ nmap -p 1-65535 -T4 -A -v 你的域名或者地址
 # -A 全面扫描
 ```
 
+## systemctl
 
+查看linux上运行哪些服务
 
+以下选项可根据类型列出单元：
 
+```bash
+systemctl list-units --type service
+```
+
+以下选项可帮助您根据状态列出单位，输出与前例类似但更直截了当：
+
+```bash
+systemctl list-unit-files --type service
+```
+
+运行以下命令以查看指定服务的状态：
+
+```bash
+systemctl | grep apache2
+# 或者
+systemctl status apache2
+```
+
+使用以下命令查看系统启动时会被启用的服务列表：
+
+```bash
+systemctl list-unit-files | grep enabled
+```
 
 
 
